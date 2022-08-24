@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>UseEveryOpCode</AssemblyName>
+        <RootNamespace>UseEveryOpCode</RootNamespace>
+        <PackageId>UseEveryOpCode</PackageId>
+        <Authors>UseEveryOpCode</Authors>
+        <Company>UseEveryOpCode</Company>
+        <Product>UseEveryOpCode</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AsmResolver.DotNet" Version="4.11.2" />
+        <PackageReference Include="Bogus" Version="34.0.2" />
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
+        <PackageReference Include="Sharprompt" Version="2.4.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Resources\6.0\OpCodeTestApp" />
+        <EmbeddedResource Include="Resources\6.0\OpCodeTestApp" />
+        <None Remove="Resources\6.0\OpCodeTestApp.dll" />
+        <EmbeddedResource Include="Resources\6.0\OpCodeTestApp.dll" />
+        <None Remove="Resources\6.0\OpCodeTestApp.exe" />
+        <EmbeddedResource Include="Resources\6.0\OpCodeTestApp.exe" />
+        <None Remove="Resources\6.0\OpCodeTestApp.runtimeconfig.json" />
+        <EmbeddedResource Include="Resources\6.0\OpCodeTestApp.runtimeconfig.json" />
+        <None Remove="Resources\4.8\OpCodeTestApp.exe" />
+        <EmbeddedResource Include="Resources\4.8\OpCodeTestApp.exe" />
+        <None Remove="Resources\3.1\OpCodeTestApp" />
+        <EmbeddedResource Include="Resources\3.1\OpCodeTestApp" />
+        <None Remove="Resources\3.1\OpCodeTestApp.dll" />
+        <EmbeddedResource Include="Resources\3.1\OpCodeTestApp.dll" />
+        <None Remove="Resources\3.1\OpCodeTestApp.exe" />
+        <EmbeddedResource Include="Resources\3.1\OpCodeTestApp.exe" />
+        <None Remove="Resources\3.1\OpCodeTestApp.runtimeconfig.json" />
+        <EmbeddedResource Include="Resources\3.1\OpCodeTestApp.runtimeconfig.json" />
+    </ItemGroup>
+
+</Project>
