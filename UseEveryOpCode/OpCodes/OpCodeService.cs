@@ -34,11 +34,44 @@ public class OpCodeService
             CilOpCodes.Shl, 
             CilOpCodes.And, 
         };
+       
         _opCodes = new Dictionary<CilOpCode, IOpCode>();
         foreach (var opcode in arithmeticOpCodes)
         {
             _opCodes.Add(opcode, new TwoPopOperatorOpCode(opcode));
         }
+        
+        var singlePushOpCodes = new[]
+        {
+            CilOpCodes.Ldc_I4_0,
+            CilOpCodes.Ldc_I4_1,
+            CilOpCodes.Ldc_I4_2,
+            CilOpCodes.Ldc_I4_3,
+            CilOpCodes.Ldc_I4_4,
+            CilOpCodes.Ldc_I4_5,
+            CilOpCodes.Ldc_I4_6,
+            CilOpCodes.Ldc_I4_7,
+            CilOpCodes.Ldc_I4_8,
+            CilOpCodes.Ldnull, 
+        };
+
+        foreach (var opcode in singlePushOpCodes)
+        {
+            _opCodes.Add(opcode,new SinglePushOpCode(opcode));
+        }
+
+        var noPushNoPopOpCodes = new[]
+        {
+            CilOpCodes.Nop,
+            CilOpCodes.Break,
+        };
+        
+        foreach (var opcode in noPushNoPopOpCodes)
+        {
+            _opCodes.Add(opcode,new NoPushNoPopOpCode(opcode));
+        }
+
+
     }
     public IOpCode GetOpCode(CilOpCode opCode)
     {
