@@ -15,3 +15,7 @@
 - [Washi1337](https://github.com/washi1337) for [AsmResolver](https://github.com/washi1337/asmresolver) and his help in general
 - [CommandLineParser](https://github.com/commandlineparser/commandline)
 - [Shibayan](https://github.com/shibayan) for [Sharprompt](https://github.com/shibayan/sharprompt)
+
+## License
+
+#### UseEveryOpCode is under the MIT License so you can do whatever you want with it.
