@@ -71,6 +71,10 @@ public class OpCodeService
             _opCodes.Add(opcode,new NoPushNoPopOpCode(opcode));
         }
 
+        _opCodes.Add(CilOpCodes.Callvirt,new CallVirtOpCode());
+        _opCodes.Add(CilOpCodes.Call,new CallOpCode());
+        _opCodes.Add(CilOpCodes.Calli,new CalliOpCode());
+
 
     }
     public IOpCode GetOpCode(CilOpCode opCode)
