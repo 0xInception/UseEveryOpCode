@@ -54,12 +54,28 @@ public class OpCodeService
             CilOpCodes.Ldc_I4_7,
             CilOpCodes.Ldc_I4_8,
             CilOpCodes.Ldnull,
+            CilOpCodes.Ldc_I4_M1,
         };
 
         foreach (var opcode in singlePushOpCodes)
         {
             _opCodes.Add(opcode, new SinglePushOpCode(opcode));
         }
+
+        var ldcInstructions = new[]
+        {
+            CilOpCodes.Ldc_I4,
+            CilOpCodes.Ldc_I4_S,
+        };
+        
+        foreach (var opcode in ldcInstructions)
+        {
+            _opCodes.Add(opcode, new LdcI4OpCode(opcode));
+        }
+
+        _opCodes.Add(CilOpCodes.Ldc_R4, new LdcR4OpCode());
+        _opCodes.Add(CilOpCodes.Ldc_R8, new LdcR8OpCode());
+        _opCodes.Add(CilOpCodes.Ldstr, new LdstrOpCode());
 
         var noPushNoPopOpCodes = new[]
         {
@@ -72,9 +88,9 @@ public class OpCodeService
             _opCodes.Add(opcode, new NoPushNoPopOpCode(opcode));
         }
 
-        _opCodes.Add(CilOpCodes.Callvirt, new CallVirtOpCode());
         _opCodes.Add(CilOpCodes.Call, new CallOpCode());
         _opCodes.Add(CilOpCodes.Calli, new CalliOpCode());
+        _opCodes.Add(CilOpCodes.Callvirt, new CallVirtOpCode());
 
         var twoPopBranching = new[]
         {
