@@ -185,6 +185,7 @@ public class OpCodeService
             _opCodes.Add(opcode, new ConvertOpCode(opcode));
         }
 
+        _opCodes.Add(CilOpCodes.Jmp, new JmpOpCode());
     }
 
     public IOpCode GetOpCode(CilOpCode opCode)
