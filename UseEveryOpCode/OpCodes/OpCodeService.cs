@@ -186,6 +186,43 @@ public class OpCodeService
         }
 
         _opCodes.Add(CilOpCodes.Jmp, new JmpOpCode());
+
+        var loadArgumentNoOperand = new[]
+        {
+            (CilOpCodes.Ldarg_0,1),
+            (CilOpCodes.Ldarg_1,2),
+            (CilOpCodes.Ldarg_2,3),
+            (CilOpCodes.Ldarg_3,4)
+        };
+
+        foreach (var opcode in loadArgumentNoOperand)
+        {
+            _opCodes.Add(opcode.Item1, new LoadArgumentNoOperandOpCode(opcode.Item1,opcode.Item2));
+        }
+
+        var loadArgumentOpCodes = new[]
+        {
+            CilOpCodes.Ldarg, 
+            CilOpCodes.Ldarga,
+            CilOpCodes.Ldarg_S, 
+            CilOpCodes.Ldarga_S, 
+        };
+        
+        foreach (var opcode in loadArgumentOpCodes)
+        {
+            _opCodes.Add(opcode, new LoadArgumentOpCode(opcode));
+        }
+        
+        var setArgumentOpCodes = new[]
+        {
+            CilOpCodes.Starg,
+            CilOpCodes.Starg_S,
+        };
+        
+        foreach (var opcode in setArgumentOpCodes)
+        {
+            _opCodes.Add(opcode, new SetArgumentOpCode(opcode));
+        }
     }
 
     public IOpCode GetOpCode(CilOpCode opCode)
