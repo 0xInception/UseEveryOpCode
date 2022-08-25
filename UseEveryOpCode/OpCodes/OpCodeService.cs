@@ -142,8 +142,48 @@ public class OpCodeService
         {
             _opCodes.Add(opcode, new UnconditionalBranching(opcode));
         }
+
+        var convertOpCodes = new[]
+        {
+            CilOpCodes.Conv_I1,
+            CilOpCodes.Conv_I2,
+            CilOpCodes.Conv_I4,
+            CilOpCodes.Conv_I8,
+            CilOpCodes.Conv_R4,
+            CilOpCodes.Conv_R8,
+            CilOpCodes.Conv_U1,
+            CilOpCodes.Conv_U2,
+            CilOpCodes.Conv_U4,
+            CilOpCodes.Conv_U8,
+            CilOpCodes.Conv_I,
+            CilOpCodes.Conv_U,
+            CilOpCodes.Conv_R_Un,
+            CilOpCodes.Conv_Ovf_I1,
+            CilOpCodes.Conv_Ovf_I1_Un,
+            CilOpCodes.Conv_Ovf_I2,
+            CilOpCodes.Conv_Ovf_I2_Un,
+            CilOpCodes.Conv_Ovf_I4,
+            CilOpCodes.Conv_Ovf_I4_Un,
+            CilOpCodes.Conv_Ovf_I8,
+            CilOpCodes.Conv_Ovf_I8_Un,
+            CilOpCodes.Conv_Ovf_U1,
+            CilOpCodes.Conv_Ovf_U1_Un,
+            CilOpCodes.Conv_Ovf_U2,
+            CilOpCodes.Conv_Ovf_U2_Un,
+            CilOpCodes.Conv_Ovf_U4,
+            CilOpCodes.Conv_Ovf_U4_Un,
+            CilOpCodes.Conv_Ovf_U8,
+            CilOpCodes.Conv_Ovf_U8_Un,
+            CilOpCodes.Conv_Ovf_I,
+            CilOpCodes.Conv_Ovf_I_Un,
+            CilOpCodes.Conv_Ovf_U,
+            CilOpCodes.Conv_Ovf_U_Un, 
+        };
         
-        
+        foreach (var opcode in convertOpCodes)
+        {
+            _opCodes.Add(opcode, new ConvertOpCode(opcode));
+        }
 
     }
 
