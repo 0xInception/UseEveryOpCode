@@ -6,6 +6,7 @@ using AsmResolver.DotNet.Code.Cil;
 using AsmResolver.DotNet.Signatures;
 using AsmResolver.DotNet.Signatures.Types;
 using AsmResolver.PE.DotNet.Cil;
+using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 using Sharprompt;
 using UseEveryOpCode;
 using UseEveryOpCode.OpCodes;
@@ -17,10 +18,11 @@ var service = new OpCodeService();
 var opcodes = service.GetOpCodes();
 var name = Prompt.Input<string>("Application name", "OpCodeTestApp",
     validators: new[] { Validators.Required(), Validators.MinLength(1), Validators.MaxLength(100) });
+//var addAttributes = Prompt.Select("Add attributes indicating the opcode name", new[] { "Yes", "No" }, 2,"Yes") == "Yes"; TODO: Implement marking methods using custom attributes.
 var runtime = Prompt.Select<Runtime>("Runtime");
 var output = Prompt.Input<string>("Output Folder", Environment.CurrentDirectory,
     validators: new[] { Validators.Required(), Validators.MinLength(1), Validators.MaxLength(100) });
-var excludedOpcodes = Prompt.MultiSelect("Exclude opcodes", opcodes.Select(d => d.Item1), int.MaxValue, 0)
+var excludedOpcodes = Prompt.MultiSelect("Exclude opcodes", opcodes.Select(d => d.Item1), 20, 0)
     .Select(x => opcodes.First(d => d.Item1 == x)).ToArray();
 var includedAttributes = Prompt.List(new ListOptions<AttributeOptions>
 {
@@ -40,9 +42,7 @@ var constructor = type.CreateMemberReference(".ctor",
         Enumerable.Empty<TypeSignature>())).ImportWith(importer);
 
 
-var programType = module.TopLevelTypes.First(d => d.Name == "Program");
-var main = programType.Methods.First(d => d.Name == "Main");
-main.CilMethodBody = new CilMethodBody(main);
+
 var assembly = module.CorLibTypeFactory.CorLibScope;
 if (runtime != Runtime.DotNetFramework)
 {
@@ -52,6 +52,10 @@ if (runtime != Runtime.DotNetFramework)
 var writeLine = assembly.CreateTypeReference("System", "Console").CreateMemberReference("WriteLine",
     MethodSignature.CreateStatic(
         module.CorLibTypeFactory.Void, module.CorLibTypeFactory.String)).ImportWith(importer);
+
+var programType = module.TopLevelTypes.First(d => d.Name == "Program");
+var main = programType.Methods.First(d => d.Name == "Main");
+main.CilMethodBody = new CilMethodBody(main);
 foreach (var opCode in opcodes)
 {
     if (excludedOpcodes.Contains(opCode))
