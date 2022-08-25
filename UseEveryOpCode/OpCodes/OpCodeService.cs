@@ -223,6 +223,33 @@ public class OpCodeService
         {
             _opCodes.Add(opcode, new SetArgumentOpCode(opcode));
         }
+
+        var loadStaticFieldOpCodes = new[]
+        {
+            CilOpCodes.Ldsfld,
+            CilOpCodes.Ldsflda,
+        };
+        
+        foreach (var opcode in loadStaticFieldOpCodes)
+        {
+            _opCodes.Add(opcode, new LoadStaticFieldOpCode(opcode));
+        }
+
+
+        var loadFieldOpCodes = new[]
+        {
+            CilOpCodes.Ldfld,
+            CilOpCodes.Ldflda
+        };
+        
+        foreach (var opcode in loadFieldOpCodes)
+        {
+            _opCodes.Add(opcode, new LoadFieldOpCode(opcode));
+        }
+        
+
+        _opCodes.Add(CilOpCodes.Stfld,new SetFieldOpCode(CilOpCodes.Stfld));
+        _opCodes.Add(CilOpCodes.Stsfld,new SetStaticFieldOpCode(CilOpCodes.Stsfld));
     }
 
     public IOpCode GetOpCode(CilOpCode opCode)
