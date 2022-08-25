@@ -6,6 +6,7 @@ namespace UseEveryOpCode.OpCodes;
 public class OpCodeService
 {
     private Dictionary<CilOpCode, IOpCode> _opCodes;
+
     public OpCodeService()
     {
         var arithmeticOpCodes = new[]
@@ -25,22 +26,22 @@ public class OpCodeService
             CilOpCodes.Sub_Ovf_Un,
             CilOpCodes.Xor,
             CilOpCodes.Cgt,
-            CilOpCodes.Cgt_Un, 
-            CilOpCodes.Clt, 
-            CilOpCodes.Clt_Un, 
-            CilOpCodes.Ceq, 
-            CilOpCodes.Shr, 
-            CilOpCodes.Shr_Un, 
-            CilOpCodes.Shl, 
-            CilOpCodes.And, 
+            CilOpCodes.Cgt_Un,
+            CilOpCodes.Clt,
+            CilOpCodes.Clt_Un,
+            CilOpCodes.Ceq,
+            CilOpCodes.Shr,
+            CilOpCodes.Shr_Un,
+            CilOpCodes.Shl,
+            CilOpCodes.And,
         };
-       
+
         _opCodes = new Dictionary<CilOpCode, IOpCode>();
         foreach (var opcode in arithmeticOpCodes)
         {
             _opCodes.Add(opcode, new TwoPopOperatorOpCode(opcode));
         }
-        
+
         var singlePushOpCodes = new[]
         {
             CilOpCodes.Ldc_I4_0,
@@ -52,12 +53,12 @@ public class OpCodeService
             CilOpCodes.Ldc_I4_6,
             CilOpCodes.Ldc_I4_7,
             CilOpCodes.Ldc_I4_8,
-            CilOpCodes.Ldnull, 
+            CilOpCodes.Ldnull,
         };
 
         foreach (var opcode in singlePushOpCodes)
         {
-            _opCodes.Add(opcode,new SinglePushOpCode(opcode));
+            _opCodes.Add(opcode, new SinglePushOpCode(opcode));
         }
 
         var noPushNoPopOpCodes = new[]
@@ -65,18 +66,71 @@ public class OpCodeService
             CilOpCodes.Nop,
             CilOpCodes.Break,
         };
-        
+
         foreach (var opcode in noPushNoPopOpCodes)
         {
-            _opCodes.Add(opcode,new NoPushNoPopOpCode(opcode));
+            _opCodes.Add(opcode, new NoPushNoPopOpCode(opcode));
         }
 
-        _opCodes.Add(CilOpCodes.Callvirt,new CallVirtOpCode());
-        _opCodes.Add(CilOpCodes.Call,new CallOpCode());
-        _opCodes.Add(CilOpCodes.Calli,new CalliOpCode());
+        _opCodes.Add(CilOpCodes.Callvirt, new CallVirtOpCode());
+        _opCodes.Add(CilOpCodes.Call, new CallOpCode());
+        _opCodes.Add(CilOpCodes.Calli, new CalliOpCode());
 
+        var twoPopBranching = new[]
+        {
+            CilOpCodes.Beq,
+            CilOpCodes.Beq_S,
+            CilOpCodes.Bge,
+            CilOpCodes.Bge_S,
+            CilOpCodes.Bge_Un,
+            CilOpCodes.Bge_Un_S,
+            CilOpCodes.Bgt,
+            CilOpCodes.Bgt_S,
+            CilOpCodes.Bgt_Un,
+            CilOpCodes.Bgt_Un_S,
+            CilOpCodes.Ble,
+            CilOpCodes.Ble_S,
+            CilOpCodes.Ble_Un,
+            CilOpCodes.Ble_Un_S,
+            CilOpCodes.Blt,
+            CilOpCodes.Blt_S,
+            CilOpCodes.Blt_Un,
+            CilOpCodes.Blt_Un_S,
+            CilOpCodes.Bne_Un,
+            CilOpCodes.Bne_Un_S,
+        };
+
+        foreach (var opcode in twoPopBranching)
+        {
+            _opCodes.Add(opcode, new TwoPopBranching(opcode));
+        }
+
+        var onePopBranching = new[]
+        {
+            CilOpCodes.Brfalse,
+            CilOpCodes.Brfalse_S,
+            CilOpCodes.Brtrue,
+            CilOpCodes.Brtrue_S,
+        };
+        foreach (var opcode in onePopBranching)
+        {
+            _opCodes.Add(opcode, new OnePopBranching(opcode));
+        }
+        
+        var unconditionalBranching = new[]
+        {
+            CilOpCodes.Br,
+            CilOpCodes.Br_S,
+        };
+        foreach (var opcode in unconditionalBranching)
+        {
+            _opCodes.Add(opcode, new UnconditionalBranching(opcode));
+        }
+        
+        
 
     }
+
     public IOpCode GetOpCode(CilOpCode opCode)
     {
         return _opCodes[opCode];
