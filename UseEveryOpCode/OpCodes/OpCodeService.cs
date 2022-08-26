@@ -72,7 +72,7 @@ public class OpCodeService
         {
             _opCodes.Add(opcode, new LdcI4OpCode(opcode));
         }
-
+        _opCodes.Add(CilOpCodes.Ldc_I8, new LdcI8OpCode());
         _opCodes.Add(CilOpCodes.Ldc_R4, new LdcR4OpCode());
         _opCodes.Add(CilOpCodes.Ldc_R8, new LdcR8OpCode());
         _opCodes.Add(CilOpCodes.Ldstr, new LdstrOpCode());
@@ -81,6 +81,7 @@ public class OpCodeService
         {
             CilOpCodes.Nop,
             CilOpCodes.Break,
+            CilOpCodes.Ret,
         };
 
         foreach (var opcode in noPushNoPopOpCodes)
