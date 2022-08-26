@@ -304,6 +304,7 @@ public class OpCodeService
         
         _opCodes.Add(CilOpCodes.Dup,new DupOpCode());
         _opCodes.Add(CilOpCodes.Pop,new PopOpCode());
+        _opCodes.Add(CilOpCodes.Switch,new SwitchOpCode());
 
     }
 
