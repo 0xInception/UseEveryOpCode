@@ -301,6 +301,10 @@ public class OpCodeService
         {
             _opCodes.Add(opcode, new SetLocalOpCode(opcode));
         }
+        
+        _opCodes.Add(CilOpCodes.Dup,new DupOpCode());
+        _opCodes.Add(CilOpCodes.Pop,new PopOpCode());
+
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
