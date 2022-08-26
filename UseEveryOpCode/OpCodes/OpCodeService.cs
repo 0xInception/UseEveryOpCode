@@ -250,11 +250,56 @@ public class OpCodeService
 
         _opCodes.Add(CilOpCodes.Stfld,new SetFieldOpCode(CilOpCodes.Stfld));
         _opCodes.Add(CilOpCodes.Stsfld,new SetStaticFieldOpCode(CilOpCodes.Stsfld));
-    }
 
-    public IOpCode GetOpCode(CilOpCode opCode)
-    {
-        return _opCodes[opCode];
+        var loadLocalNoOperandOpCodes = new[]
+        {
+            (CilOpCodes.Ldloc_0, 1),
+            (CilOpCodes.Ldloc_1, 2),
+            (CilOpCodes.Ldloc_2, 3),
+            (CilOpCodes.Ldloc_3, 4)
+        };
+        
+        foreach (var opcode in loadLocalNoOperandOpCodes)
+        {
+            _opCodes.Add(opcode.Item1, new LoadLocalNoOperandOpCode(opcode.Item1, opcode.Item2));
+        }
+        
+        var setLocalNoOperandOpCodes = new[]
+        {
+            (CilOpCodes.Stloc_0, 1),
+            (CilOpCodes.Stloc_1, 2),
+            (CilOpCodes.Stloc_2, 3),
+            (CilOpCodes.Stloc_3, 4)
+        };
+        
+        foreach (var opcode in setLocalNoOperandOpCodes)
+        {
+            _opCodes.Add(opcode.Item1, new SetLocalNoOperandOpCode(opcode.Item1, opcode.Item2));
+        }
+
+        var loadLocalOpCodes = new[]
+        {
+            CilOpCodes.Ldloc,
+            CilOpCodes.Ldloc_S,
+            CilOpCodes.Ldloca,
+            CilOpCodes.Ldloca_S,
+        };
+        
+        foreach (var opcode in loadLocalOpCodes)
+        {
+            _opCodes.Add(opcode, new LoadLocalOpCode(opcode));
+        }
+
+        var setLocalOpCodes = new[]
+        {
+            CilOpCodes.Stloc,
+            CilOpCodes.Stloc_S,
+        };
+        
+        foreach (var opcode in setLocalOpCodes)
+        {
+            _opCodes.Add(opcode, new SetLocalOpCode(opcode));
+        }
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
