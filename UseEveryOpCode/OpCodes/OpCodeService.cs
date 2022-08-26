@@ -34,6 +34,7 @@ public class OpCodeService
             CilOpCodes.Shr_Un,
             CilOpCodes.Shl,
             CilOpCodes.And,
+            CilOpCodes.Or, 
         };
 
         _opCodes = new Dictionary<CilOpCode, IOpCode>();
@@ -304,8 +305,8 @@ public class OpCodeService
         
         _opCodes.Add(CilOpCodes.Dup,new DupOpCode());
         _opCodes.Add(CilOpCodes.Pop,new PopOpCode());
-        _opCodes.Add(CilOpCodes.Switch,new SwitchOpCode());
-
+        _opCodes.Add(CilOpCodes.Switch, new SwitchOpCode());
+        _opCodes.Add(CilOpCodes.Not, new NotOpCode());
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
