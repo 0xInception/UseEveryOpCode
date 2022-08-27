@@ -309,6 +309,9 @@ public class OpCodeService
         _opCodes.Add(CilOpCodes.Switch, new SwitchOpCode());
         _opCodes.Add(CilOpCodes.Not, new NotOpCode());
         _opCodes.Add(CilOpCodes.Neg, new NegOpCode());
+        _opCodes.Add(CilOpCodes.Newarr, new NewArrOpCode());
+        _opCodes.Add(CilOpCodes.Ldlen, new LdlenOpCode());
+
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
