@@ -7,23 +7,23 @@ using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 
 namespace UseEveryOpCode.OpCodes;
 
-public class LdvirtftnOpCode : IOpCode
+public class NewobjOpCode : IOpCode
 {
     public IList<CilInstruction> CallingInstructions => new List<CilInstruction>();
 
     public MethodDefinition? Generate(TypeDefinition typeDefinition)
     {
 
-        var name = CilOpCodes.Ldvirtftn.ToString();
+        var name = CilOpCodes.Newobj.ToString();
         var subType = new TypeDefinition(typeDefinition.Namespace, $"{name}Dummy",
             TypeAttributes.Class | TypeAttributes.Public | TypeAttributes.NestedPublic,
             typeDefinition.Module.CorLibTypeFactory.Object.ToTypeDefOrRef());
-        var ldvirtMethod = new MethodDefinition(".ctor",
+        var newObj = new MethodDefinition(".ctor",
             MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RuntimeSpecialName,
             MethodSignature.CreateInstance(typeDefinition.Module.CorLibTypeFactory.Void));
-        ldvirtMethod.CilMethodBody = new CilMethodBody(ldvirtMethod);
-        ldvirtMethod.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
-        subType.Methods.Add(ldvirtMethod);
+        newObj.CilMethodBody = new CilMethodBody(newObj);
+        newObj.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        subType.Methods.Add(newObj);
         var dummyMethod = new MethodDefinition($"{name}DummyMethod", MethodAttributes.Public,
             MethodSignature.CreateInstance(typeDefinition.Module.CorLibTypeFactory.Void));
         dummyMethod.CilMethodBody = new CilMethodBody(dummyMethod);
@@ -36,8 +36,7 @@ public class LdvirtftnOpCode : IOpCode
             new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
                 Enumerable.Empty<TypeSignature>()));
         method.CilMethodBody = new CilMethodBody(method);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Newobj, ldvirtMethod);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ldvirtftn, dummyMethod);
+        method.CilMethodBody.Instructions.Add(CilOpCodes.Newobj, newObj);
         method.CilMethodBody.Instructions.Add(CilOpCodes.Pop);
         method.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
         return method;

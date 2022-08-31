@@ -95,6 +95,9 @@ public class OpCodeService
         _opCodes.Add(CilOpCodes.Callvirt, new CallVirtOpCode());
         _opCodes.Add(CilOpCodes.Ldftn, new LdftnOpCode());
         _opCodes.Add(CilOpCodes.Ldvirtftn, new LdvirtftnOpCode());
+        _opCodes.Add(CilOpCodes.Newobj, new NewobjOpCode());
+        _opCodes.Add(CilOpCodes.Castclass, new CastclassOpCode());
+        _opCodes.Add(CilOpCodes.Isinst, new IsInstOpCode());
 
         var twoPopBranching = new[]
         {
