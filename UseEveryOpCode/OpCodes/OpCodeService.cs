@@ -94,6 +94,7 @@ public class OpCodeService
         _opCodes.Add(CilOpCodes.Calli, new CalliOpCode());
         _opCodes.Add(CilOpCodes.Callvirt, new CallVirtOpCode());
         _opCodes.Add(CilOpCodes.Ldftn, new LdftnOpCode());
+        _opCodes.Add(CilOpCodes.Ldvirtftn, new LdvirtftnOpCode());
 
         var twoPopBranching = new[]
         {
@@ -311,7 +312,7 @@ public class OpCodeService
         _opCodes.Add(CilOpCodes.Neg, new NegOpCode());
         _opCodes.Add(CilOpCodes.Newarr, new NewArrOpCode());
         _opCodes.Add(CilOpCodes.Ldlen, new LdlenOpCode());
-
+        
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
