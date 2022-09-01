@@ -315,7 +315,26 @@ public class OpCodeService
         _opCodes.Add(CilOpCodes.Neg, new NegOpCode());
         _opCodes.Add(CilOpCodes.Newarr, new NewArrOpCode());
         _opCodes.Add(CilOpCodes.Ldlen, new LdlenOpCode());
-        
+
+        var ldindOpCodes = new[]
+        {
+            CilOpCodes.Ldind_I1,
+            CilOpCodes.Ldind_U1,
+            CilOpCodes.Ldind_I2,
+            CilOpCodes.Ldind_U2,
+            CilOpCodes.Ldind_I4,
+            CilOpCodes.Ldind_U4,
+            CilOpCodes.Ldind_I8,
+            CilOpCodes.Ldind_I,
+            CilOpCodes.Ldind_R4,
+            CilOpCodes.Ldind_R8,
+            CilOpCodes.Ldind_Ref
+        };
+
+        foreach (var opcode in ldindOpCodes)
+        {
+            _opCodes.Add(opcode,new LdindOpCode(opcode));
+        }
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
