@@ -335,6 +335,23 @@ public class OpCodeService
         {
             _opCodes.Add(opcode,new LdindOpCode(opcode));
         }
+        
+        var stindOpCodes = new[]
+        {
+            CilOpCodes.Stind_I,
+            CilOpCodes.Stind_I1,
+            CilOpCodes.Stind_I2,
+            CilOpCodes.Stind_I4,
+            CilOpCodes.Stind_I8,
+            CilOpCodes.Stind_R4,
+            CilOpCodes.Stind_R8,
+            CilOpCodes.Stind_Ref,
+        };
+
+        foreach (var opcode in stindOpCodes)
+        {
+            _opCodes.Add(opcode,new StindOpCode(opcode));
+        }
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
