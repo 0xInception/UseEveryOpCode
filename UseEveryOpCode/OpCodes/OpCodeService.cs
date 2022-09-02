@@ -398,7 +398,8 @@ public class OpCodeService
         
         _opCodes.Add(CilOpCodes.Leave, new LeaveOpCode(CilOpCodes.Leave));
         _opCodes.Add(CilOpCodes.Leave_S, new LeaveOpCode(CilOpCodes.Leave_S));
-
+        _opCodes.Add(CilOpCodes.Box, new BoxOpCode());
+        _opCodes.Add(CilOpCodes.Unbox_Any, new UnboxAnyOpCode());
         
     }
 
