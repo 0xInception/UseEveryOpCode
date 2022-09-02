@@ -396,6 +396,10 @@ public class OpCodeService
         
         _opCodes.Add(CilOpCodes.Stelem, new StelemOpCode());
         
+        _opCodes.Add(CilOpCodes.Leave, new LeaveOpCode(CilOpCodes.Leave));
+        _opCodes.Add(CilOpCodes.Leave_S, new LeaveOpCode(CilOpCodes.Leave_S));
+
+        
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
