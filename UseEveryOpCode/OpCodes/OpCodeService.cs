@@ -376,6 +376,26 @@ public class OpCodeService
         _opCodes.Add(CilOpCodes.Ldelem, new LdelemOpCode());
         _opCodes.Add(CilOpCodes.Ldelema, new LdelemaOpCode());
 
+
+        var setElementOpCodes = new[]
+        {
+            CilOpCodes.Stelem_I,
+            CilOpCodes.Stelem_I1,
+            CilOpCodes.Stelem_I2, 
+            CilOpCodes.Stelem_I4, 
+            CilOpCodes.Stelem_I8, 
+            CilOpCodes.Stelem_R4, 
+            CilOpCodes.Stelem_R8, 
+            CilOpCodes.Stelem_Ref, 
+        };
+        
+        foreach (var opcode in setElementOpCodes)
+        {
+            _opCodes.Add(opcode,new SetElementOpCode(opcode));
+        }
+        
+        _opCodes.Add(CilOpCodes.Stelem, new StelemOpCode());
+        
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
