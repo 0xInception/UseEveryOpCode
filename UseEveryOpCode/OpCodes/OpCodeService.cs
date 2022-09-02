@@ -352,6 +352,30 @@ public class OpCodeService
         {
             _opCodes.Add(opcode,new StindOpCode(opcode));
         }
+
+        var loadElementOpCodes = new[]
+        {
+            CilOpCodes.Ldelem_I,
+            CilOpCodes.Ldelem_I1,
+            CilOpCodes.Ldelem_I2,
+            CilOpCodes.Ldelem_I4,
+            CilOpCodes.Ldelem_I8,
+            CilOpCodes.Ldelem_R4, 
+            CilOpCodes.Ldelem_R8, 
+            CilOpCodes.Ldelem_Ref, 
+            CilOpCodes.Ldelem_U1, 
+            CilOpCodes.Ldelem_U2, 
+            CilOpCodes.Ldelem_U4, 
+        };
+        
+        foreach (var opcode in loadElementOpCodes)
+        {
+            _opCodes.Add(opcode,new LoadElementOpCode(opcode));
+        }
+
+        _opCodes.Add(CilOpCodes.Ldelem, new LdelemOpCode());
+        _opCodes.Add(CilOpCodes.Ldelema, new LdelemaOpCode());
+
     }
 
     public (CilOpCode,IOpCode)[] GetOpCodes()
