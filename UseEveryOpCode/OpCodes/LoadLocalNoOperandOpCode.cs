@@ -6,6 +6,7 @@ using AsmResolver.PE.DotNet.Cil;
 using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 
 namespace UseEveryOpCode.OpCodes;
+using static CilOpCodes;
 
 public class LoadLocalNoOperandOpCode : IOpCode
 {
@@ -25,14 +26,19 @@ public class LoadLocalNoOperandOpCode : IOpCode
         var method = new MethodDefinition(_opCode.ToString().Replace(".","_"), MethodAttributes.Public | MethodAttributes.Static,
             new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
                 Enumerable.Empty<TypeSignature>()));
-        method.CilMethodBody = new CilMethodBody(method);
+        method.CilMethodBody = new CilMethodBody(method)
+        {
+            Instructions =
+            {
+                {_opCode},
+                {Pop},
+                {Ret}
+            }
+        };
         for(int i = 0;i<_local;i++)
         {
             method.CilMethodBody.LocalVariables.Add(new CilLocalVariable(typeDefinition.Module.CorLibTypeFactory.Int32));
         }
-        method.CilMethodBody.Instructions.Add(_opCode);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Pop);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
         return method;
     }
 }

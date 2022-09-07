@@ -7,6 +7,7 @@ using AsmResolver.PE.DotNet.Metadata.Tables;
 using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 
 namespace UseEveryOpCode.OpCodes;
+using static AsmResolver.PE.DotNet.Cil.CilOpCodes;
 
 public class JmpOpCode : IOpCode
 {
@@ -17,15 +18,26 @@ public class JmpOpCode : IOpCode
         var dummyMethod = new MethodDefinition($"{name}Dummy", MethodAttributes.Public | MethodAttributes.Static,
             new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
                 Enumerable.Empty<TypeSignature>()));
-        dummyMethod.CilMethodBody = new CilMethodBody(dummyMethod);
+        dummyMethod.CilMethodBody = new CilMethodBody(dummyMethod)
+        {
+            Instructions =
+            {
+                {Ret}
+            }
+        };
         dummyMethod.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
         typeDefinition.Methods.Add(dummyMethod);
         var method = new MethodDefinition(name, MethodAttributes.Public | MethodAttributes.Static,
             new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
                 Enumerable.Empty<TypeSignature>()));
-        method.CilMethodBody = new CilMethodBody(method);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Jmp, dummyMethod);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        method.CilMethodBody = new CilMethodBody(method)
+        {
+            Instructions =
+            {
+                {Jmp, dummyMethod},
+                {Ret}
+            }
+        };
         return method;
     }
 }

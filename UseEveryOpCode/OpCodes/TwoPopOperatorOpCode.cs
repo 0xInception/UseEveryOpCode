@@ -6,6 +6,7 @@ using AsmResolver.PE.DotNet.Cil;
 using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 
 namespace UseEveryOpCode.OpCodes;
+using static CilOpCodes;
 
 public class TwoPopOperatorOpCode : IOpCode
 {
@@ -20,15 +21,21 @@ public class TwoPopOperatorOpCode : IOpCode
 
     public MethodDefinition Generate(TypeDefinition typeDefinition)
     {
-        var method = new MethodDefinition(_opCode.ToString().Replace(".","_"), MethodAttributes.Public | MethodAttributes.Static,
+        var method = new MethodDefinition(_opCode.ToString().Replace(".", "_"),
+            MethodAttributes.Public | MethodAttributes.Static,
             new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
                 Enumerable.Empty<TypeSignature>()));
-        method.CilMethodBody = new CilMethodBody(method);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ldc_I4_2);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ldc_I4_2);
-        method.CilMethodBody.Instructions.Add(_opCode);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Pop);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        method.CilMethodBody = new CilMethodBody(method)
+        {
+            Instructions =
+            {
+                { Ldc_I4_2 },
+                { Ldc_I4_2 },
+                { _opCode },
+                { Pop },
+                { Ret }
+            }
+        };
         return method;
     }
 }

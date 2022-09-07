@@ -6,6 +6,7 @@ using AsmResolver.PE.DotNet.Cil;
 using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 
 namespace UseEveryOpCode.OpCodes;
+using static AsmResolver.PE.DotNet.Cil.CilOpCodes;
 
 public class LdcI4OpCode : IOpCode
 {
@@ -22,10 +23,15 @@ public class LdcI4OpCode : IOpCode
         var method = new MethodDefinition(_opCode.ToString().Replace(".","_"), MethodAttributes.Public | MethodAttributes.Static,
             new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
                 Enumerable.Empty<TypeSignature>()));
-        method.CilMethodBody = new CilMethodBody(method);
-        method.CilMethodBody.Instructions.Add(_opCode,0);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Pop);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        method.CilMethodBody = new CilMethodBody(method)
+        {
+            Instructions =
+            {
+                {_opCode,0},
+                {Pop},
+                {Ret}
+            }
+        };
         return method;
     }
 }

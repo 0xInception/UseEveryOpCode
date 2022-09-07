@@ -6,6 +6,7 @@ using AsmResolver.PE.DotNet.Cil;
 using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 
 namespace UseEveryOpCode.OpCodes;
+using static CilOpCodes;
 
 public class NewobjOpCode : IOpCode
 {
@@ -21,13 +22,17 @@ public class NewobjOpCode : IOpCode
         var newObj = new MethodDefinition(".ctor",
             MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RuntimeSpecialName,
             MethodSignature.CreateInstance(typeDefinition.Module.CorLibTypeFactory.Void));
-        newObj.CilMethodBody = new CilMethodBody(newObj);
-        newObj.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        newObj.CilMethodBody = new CilMethodBody(newObj)
+        {
+            Instructions = { { Ret } }
+        };
         subType.Methods.Add(newObj);
         var dummyMethod = new MethodDefinition($"{name}DummyMethod", MethodAttributes.Public,
             MethodSignature.CreateInstance(typeDefinition.Module.CorLibTypeFactory.Void));
-        dummyMethod.CilMethodBody = new CilMethodBody(dummyMethod);
-        dummyMethod.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        dummyMethod.CilMethodBody = new CilMethodBody(dummyMethod)
+        {
+            Instructions = { { Ret } }
+        };
         subType.Methods.Add(dummyMethod);
         typeDefinition.NestedTypes.Add(subType);
         subType.ImportWith(new ReferenceImporter(typeDefinition.Module));
@@ -35,10 +40,15 @@ public class NewobjOpCode : IOpCode
             MethodAttributes.Public | MethodAttributes.Static,
             new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
                 Enumerable.Empty<TypeSignature>()));
-        method.CilMethodBody = new CilMethodBody(method);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Newobj, newObj);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Pop);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        method.CilMethodBody = new CilMethodBody(method)
+        {
+            Instructions =
+            {
+                { Newobj, newObj },
+                { Pop },
+                { Ret }
+            }
+        };
         return method;
     }
 }

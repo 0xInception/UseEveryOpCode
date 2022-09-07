@@ -5,6 +5,7 @@ using AsmResolver.PE.DotNet.Cil;
 using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 
 namespace UseEveryOpCode.OpCodes;
+using static CilOpCodes;
 
 public class SetArgumentOpCode : IOpCode
 {
@@ -17,17 +18,24 @@ public class SetArgumentOpCode : IOpCode
 
     public IList<CilInstruction> CallingInstructions => new List<CilInstruction>()
     {
-        new (CilOpCodes.Ldc_I4_0)
+        new(CilOpCodes.Ldc_I4_0)
     };
 
     public MethodDefinition? Generate(TypeDefinition typeDefinition)
     {
-        var method = new MethodDefinition(_opCode.ToString().Replace(".","_"), MethodAttributes.Public | MethodAttributes.Static,
-            new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void, new []{typeDefinition.Module.CorLibTypeFactory.Int32}));
-        method.CilMethodBody = new CilMethodBody(method);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ldc_I4_0);
-        method.CilMethodBody.Instructions.Add(_opCode,method.Parameters.First());
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        var method = new MethodDefinition(_opCode.ToString().Replace(".", "_"),
+            MethodAttributes.Public | MethodAttributes.Static,
+            new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
+                new[] { typeDefinition.Module.CorLibTypeFactory.Int32 }));
+        method.CilMethodBody = new CilMethodBody(method)
+        {
+            Instructions =
+            {
+                { Ldc_I4_0 },
+                { _opCode, method.Parameters.First() },
+                { Ret }
+            }
+        };
         return method;
     }
 }

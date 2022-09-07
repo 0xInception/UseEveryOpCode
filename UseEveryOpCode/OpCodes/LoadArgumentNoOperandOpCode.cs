@@ -6,13 +6,14 @@ using AsmResolver.PE.DotNet.Cil;
 using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 
 namespace UseEveryOpCode.OpCodes;
+using static CilOpCodes;
 
 public class LoadArgumentNoOperandOpCode : IOpCode
 {
     private readonly CilOpCode _opCode;
     private readonly int _arguments;
 
-    public LoadArgumentNoOperandOpCode(CilOpCode opCode,int arguments)
+    public LoadArgumentNoOperandOpCode(CilOpCode opCode, int arguments)
     {
         _opCode = opCode;
         _arguments = arguments;
@@ -25,21 +26,28 @@ public class LoadArgumentNoOperandOpCode : IOpCode
             var instructions = new List<CilInstruction>();
             for (int i = 0; i < _arguments; i++)
             {
-                instructions.Add(new CilInstruction(CilOpCodes.Ldc_I4,i));
+                instructions.Add(new CilInstruction(CilOpCodes.Ldc_I4, i));
             }
+
             return instructions;
         }
     }
 
     public MethodDefinition? Generate(TypeDefinition typeDefinition)
     {
-        var method = new MethodDefinition(_opCode.ToString().Replace(".","_"), MethodAttributes.Public | MethodAttributes.Static,
+        var method = new MethodDefinition(_opCode.ToString().Replace(".", "_"),
+            MethodAttributes.Public | MethodAttributes.Static,
             new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
-                Enumerable.Repeat(typeDefinition.Module.CorLibTypeFactory.Int32,_arguments)));
-        method.CilMethodBody = new CilMethodBody(method);
-        method.CilMethodBody.Instructions.Add(_opCode);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Pop);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+                Enumerable.Repeat(typeDefinition.Module.CorLibTypeFactory.Int32, _arguments)));
+        method.CilMethodBody = new CilMethodBody(method)
+        {
+            Instructions =
+            {
+                { _opCode },
+                { Pop },
+                { Ret }
+            }
+        };
         return method;
     }
 }

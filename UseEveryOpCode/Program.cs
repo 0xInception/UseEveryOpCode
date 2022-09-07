@@ -56,6 +56,11 @@ var writeLine = assembly.CreateTypeReference("System", "Console").CreateMemberRe
 var programType = module.TopLevelTypes.First(d => d.Name == "Program");
 var main = programType.Methods.First(d => d.Name == "Main");
 main.CilMethodBody = new CilMethodBody(main);
+
+
+
+
+
 foreach (var opCode in opcodes)
 {
     if (excludedOpcodes.Contains(opCode))
@@ -87,6 +92,7 @@ foreach (var opCode in opcodes)
         
         result.CustomAttributes.Add(new CustomAttribute(constructor, attributeSignature));
     }
+    
 
     programType.Methods.Add(result);
 

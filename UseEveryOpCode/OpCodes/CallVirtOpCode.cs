@@ -6,6 +6,7 @@ using AsmResolver.PE.DotNet.Cil;
 using AsmResolver.PE.DotNet.Metadata.Tables.Rows;
 
 namespace UseEveryOpCode.OpCodes;
+using static AsmResolver.PE.DotNet.Cil.CilOpCodes;
 
 public class CallVirtOpCode : IOpCode
 {
@@ -21,13 +22,23 @@ public class CallVirtOpCode : IOpCode
         var callVirtMethod = new MethodDefinition(".ctor",
             MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RuntimeSpecialName,
             MethodSignature.CreateInstance(typeDefinition.Module.CorLibTypeFactory.Void));
-        callVirtMethod.CilMethodBody = new CilMethodBody(callVirtMethod);
-        callVirtMethod.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        callVirtMethod.CilMethodBody = new CilMethodBody(callVirtMethod)
+        {
+            Instructions =
+            {
+                Ret
+            }
+        };
         subType.Methods.Add(callVirtMethod);
         var dummyMethod = new MethodDefinition($"{name}DummyMethod", MethodAttributes.Public,
             MethodSignature.CreateInstance(typeDefinition.Module.CorLibTypeFactory.Void));
-        dummyMethod.CilMethodBody = new CilMethodBody(dummyMethod);
-        dummyMethod.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        dummyMethod.CilMethodBody = new CilMethodBody(dummyMethod)
+        {
+            Instructions =
+            {
+                { Ret }
+            }
+        };
         subType.Methods.Add(dummyMethod);
         typeDefinition.NestedTypes.Add(subType);
         subType.ImportWith(new ReferenceImporter(typeDefinition.Module));
@@ -35,10 +46,15 @@ public class CallVirtOpCode : IOpCode
             MethodAttributes.Public | MethodAttributes.Static,
             new MethodSignature(CallingConventionAttributes.Default, typeDefinition.Module!.CorLibTypeFactory.Void,
                 Enumerable.Empty<TypeSignature>()));
-        method.CilMethodBody = new CilMethodBody(method);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Newobj, callVirtMethod);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Callvirt, dummyMethod);
-        method.CilMethodBody.Instructions.Add(CilOpCodes.Ret);
+        method.CilMethodBody = new CilMethodBody(method)
+        {
+            Instructions =
+            {
+                { Newobj, callVirtMethod },
+                { Callvirt, dummyMethod },
+                { Ret }
+            }
+        };
         return method;
     }
 }
